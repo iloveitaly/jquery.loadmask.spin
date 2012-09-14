@@ -1,7 +1,7 @@
 jQuery LoadMask Spinner Plugin
 ==============================
 
-Based off of the [loadmask jQuery plugin](http://code.google.com/p/jquery-loadmask/) and inspired by the [MooTools Spinner class](http://mootools.net/docs/more/Interface/Spinner). Adds a customizable overlay to the element being masked and adds  a spinner graphic along with a label on top of the 
+Based off of the [loadmask jQuery plugin](http://code.google.com/p/jquery-loadmask/) and inspired by the [MooTools Spinner class](http://mootools.net/docs/more/Interface/Spinner). Adds a customizable overlay to the element being masked and adds  a spinner graphic along with a label on top of the overlay.
 
 Uses [spin.js](http://fgnass.github.com/spin.js/) for spinner generation. Note that spin.js is not included by default, you'll have to pull that into your project for yourself.
 
@@ -17,7 +17,7 @@ $('#element').mask({
 $('#element').unmask();
 ```
 
-Checkout the options for customization options.
+Checkout the [options](https://github.com/iloveitaly/jquery.loadmask.spin/blob/master/jquery.loadmask.spin.js#L52) for additional customization options.
 
 
 Authors
