@@ -21,7 +21,7 @@
 	$.fn.mask = function(label, options) {
 		options = $.extend({'delay': 0}, options)
 
-		$(this).each(function() {
+		return $(this).each(function() {
 			var element = $(this);
 
 			if(options.delay > 0) {
@@ -36,7 +36,7 @@
 	 * Removes mask from the element(s). Accepts both single and multiple selectors.
 	 */
 	$.fn.unmask = function(){
-		$(this).each(function() {
+		return $(this).each(function() {
 			$.unmaskElement($(this));
 		});
 	};
@@ -53,8 +53,9 @@
 			spinner: { lines: 10, length: 4, width: 2, radius: 5},
 			spinnerPadding: 5,
 			label: "",
-			overlayColor: "white",
-			overlayOpacity: 0.75
+
+			overlayOpacity: 0.75,
+			overlaySize: false
 		}, options)
 	
 		//if this element has delayed mask scheduled then remove it and display the new one
@@ -73,7 +74,15 @@
 		
 		element.addClass("masked");
 		
-		var maskDiv = $('<div class="loadmask"></div>').css({opacity: 0, backgroundColor: options.overlayColor});
+		var maskDiv = $('<div class="loadmask"></div>').css({opacity: 0 });
+
+		if(options.overlaySize !== false) {
+			if(options.overlaySize.height !== undefined)
+				maskDiv.height(options.overlaySize.height)
+
+			if(options.overlaySize.width !== undefined)
+				maskDiv.width(options.overlaySize.width)
+		}
 		
 		// auto height fix for IE
 		if(navigator.userAgent.toLowerCase().indexOf("msie") > -1){
@@ -88,32 +97,41 @@
 		
 		element.append(maskDiv);
 
-		if(options.label.length > 0) {
+		if(options.label.length > 0 || options.spinner !== false) {
 			var maskMsgDiv = $('<div class="loadmask-msg" style="display:none;"></div>').css({'opacity':0});
 
-			var spinner = new Spinner(options.spinner).spin();
-			var label = $('<div class="loadmask-label">' + options.label + '</div>')
+			if(options.spinner !== false)
+				maskMsgDiv.append(new Spinner(options.spinner).spin().el);
 
-			element.append(maskMsgDiv.append(spinner.el).append(label))
+			if(options.label.length > 0) {
+				var label = $('<div class="loadmask-label">' + options.label + '</div>')
+				maskMsgDiv.append(label)
+			}
+
+			element.append(maskMsgDiv);
 
 			// calculate center position
-			maskMsgDiv.css("top", Math.round(element.height() / 2 - (maskMsgDiv.height() - parseInt(maskMsgDiv.css("padding-top")) - parseInt(maskMsgDiv.css("padding-bottom"))) / 2)+"px");
-			maskMsgDiv.css("left", Math.round(element.width() / 2 - (maskMsgDiv.width() - parseInt(maskMsgDiv.css("padding-left")) - parseInt(maskMsgDiv.css("padding-right"))) / 2)+"px");
+			// TODO there must be cleaner way to do this; check newer jQuery methods and see if anything will fit
+			maskMsgDiv.css("top", Math.round(maskDiv.height() / 2 - (maskMsgDiv.height() - parseInt(maskMsgDiv.css("padding-top")) - parseInt(maskMsgDiv.css("padding-bottom"))) / 2)+"px");
+			maskMsgDiv.css("left", Math.round(maskDiv.width() / 2 - (maskMsgDiv.width() - parseInt(maskMsgDiv.css("padding-left")) - parseInt(maskMsgDiv.css("padding-right"))) / 2)+"px");
 			maskMsgDiv.show();
 
-			var spinnerSquare = options.spinner.radius * 2 + (options.spinner.width + options.spinner.length) * 2
+			if(options.spinner !== false && options.label.length > 0) {
+				var spinnerSquare = options.spinner.radius * 2 + (options.spinner.width + options.spinner.length) * 2
 
-			// The center of the spinner is positioned at the top left corner of this DIV
-			// center the label text vertically, and align the label to the right of the spinner
-			label.css({
-				'margin-left': spinnerSquare / 2 + options.spinnerPadding,
-				'margin-top': -label.height() / 2
-			})
+				// The center of the spinner is positioned at the top left corner of this DIV
+				// center the label text vertically, and align the label to the right of the spinner
+				label.css({
+					'margin-left': spinnerSquare / 2 + options.spinnerPadding,
+					'margin-top': -label.height() / 2
+				})
+			}
+
+			maskMsgDiv.fadeTo('slow', 1)
 		}
 
 		// TODO this should be customizable
 		maskDiv.fadeTo('slow', options.overlayOpacity);
-		maskMsgDiv.fadeTo('slow', 1)
 	};
 	
 	$.unmaskElement = function(element){
