@@ -10,24 +10,28 @@
 (function($){
 	
 	/**
-	 * Displays loading mask over selected element(s). Accepts both single and multiple selectors.
-	 *
-	 * @param label Text message that will be displayed on top of the mask besides a spinner (optional). 
-	 * 				If not provided only mask will be displayed without a label or a spinner.  	
-	 * @param delay Delay in milliseconds before element is masked (optional). If unmask() is called 
-	 *              before the delay times out, no mask is displayed. This can be used to prevent unnecessary 
-	 *              mask display for quick processes.   	
+	 * Displays loading mask over selected element(s). Accepts both single and multiple selectors 	
+	 * @param options the options to be used to display the mask
+	 * @example $('el').mask({spinner: false, label: 'Some Text'});
+	 * @example $('el').mask({spinner: { lines: 10, length: 4, width: 2, radius: 5}, delay: 100, label: 'Loading...'});
 	 */
-	$.fn.mask = function(label, options) {
-		options = $.extend({'delay': 0}, options)
+	$.fn.mask = function(options) {
+		options = $.extend({
+			spinner: { lines: 10, length: 4, width: 2, radius: 5},
+			spinnerPadding: 5,
+			label: "",
+			delay: 0,
+			overlayOpacity: 0.75,
+			overlaySize: false
+		}, options);
 
 		return $(this).each(function() {
 			var element = $(this);
 
 			if(options.delay > 0) {
-		        element.data("_mask_timeout", setTimeout(function() { $.maskElement(element, options)}, options.delay));
+		        	element.data("_mask_timeout", setTimeout(function() { $.maskElement(element, options)}, options.delay));
 			} else {
-				$.maskElement(element, label);
+				$.maskElement(element, options);
 			}
 		});
 	};
@@ -49,15 +53,7 @@
 	};
 
 	$.maskElement = function(element, options) {
-		options = $.extend({
-			spinner: { lines: 10, length: 4, width: 2, radius: 5},
-			spinnerPadding: 5,
-			label: "",
-
-			overlayOpacity: 0.75,
-			overlaySize: false
-		}, options)
-	
+		
 		//if this element has delayed mask scheduled then remove it and display the new one
 		if (element.data("_mask_timeout") !== undefined) {
 			clearTimeout(element.data("_mask_timeout"));
