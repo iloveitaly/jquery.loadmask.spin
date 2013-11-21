@@ -17,7 +17,7 @@ $('#element').mask({
 $('#element').unmask();
 ```
 
-Checkout the [options](https://github.com/iloveitaly/jquery.loadmask.spin/blob/master/jquery.loadmask.spin.js#L52) for additional customization options.
+Checkout the [options](https://github.com/iloveitaly/jquery.loadmask.spin/blob/master/jquery.loadmask.spin.js#L29) for additional customization options.
 
 
 Authors

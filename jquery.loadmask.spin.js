@@ -1,16 +1,26 @@
 /**
  * Copyright (c) 2009 Sergiy Kovalchuk (serg472@gmail.com)
- * 
+ *
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
- *  
+ *
  * Following code is based on Element.mask() implementation from ExtJS framework (http://extjs.com/)
  *
  */
-(function($){
-	
+(function(root, factory) {
+	/* AMD module */
+	if(typeof define == 'function' && typeof require == 'function' && define.amd) {
+		require(['jquery', 'spin'], factory);
+	} else {
+	// Browser globals
+		if(!root.Spinner) throw new Error('Spin.js not present');
+		factory(root.jQuery, root.Spinner);
+	}
+}
+(this, function($, Spinner){
+
 	/**
-	 * Displays loading mask over selected element(s). Accepts both single and multiple selectors 	
+	 * Displays loading mask over selected element(s). Accepts both single and multiple selectors
 	 * @param options the options to be used to display the mask
 	 * @example $('el').mask({spinner: false, label: 'Some Text'});
 	 * @example $('el').mask({spinner: { lines: 10, length: 4, width: 2, radius: 5}, delay: 100, label: 'Loading...'});
@@ -35,7 +45,7 @@
 			}
 		});
 	};
-	
+
 	/**
 	 * Removes mask from the element(s). Accepts both single and multiple selectors.
 	 */
@@ -44,16 +54,16 @@
 			$.unmaskElement($(this));
 		});
 	};
-	
+
 	/**
-	 * Checks if a single element is masked. Returns false if mask is delayed or not displayed. 
+	 * Checks if a single element is masked. Returns false if mask is delayed or not displayed.
 	 */
 	$.fn.isMasked = function(){
 		return this.hasClass("masked");
 	};
 
 	$.maskElement = function(element, options) {
-		
+
 		//if this element has delayed mask scheduled then remove it and display the new one
 		if (element.data("_mask_timeout") !== undefined) {
 			clearTimeout(element.data("_mask_timeout"));
@@ -63,13 +73,13 @@
 		if(element.isMasked()) {
 			$.unmaskElement(element);
 		}
-		
+
 		if(element.css("position") == "static") {
 			element.addClass("masked-relative");
 		}
-		
+
 		element.addClass("masked");
-		
+
 		var maskDiv = $('<div class="loadmask"></div>').css({opacity: 0 });
 
 		if(options.overlaySize !== false) {
@@ -79,18 +89,18 @@
 			if(options.overlaySize.width !== undefined)
 				maskDiv.width(options.overlaySize.width)
 		}
-		
+
 		// auto height fix for IE
 		if(navigator.userAgent.toLowerCase().indexOf("msie") > -1){
 			maskDiv.height(element.height() + parseInt(element.css("padding-top")) + parseInt(element.css("padding-bottom")));
 			maskDiv.width(element.width() + parseInt(element.css("padding-left")) + parseInt(element.css("padding-right")));
 		}
-		
+
 		// fix for z-index bug with selects in IE6
 		if(navigator.userAgent.toLowerCase().indexOf("msie 6") > -1){
 			element.find("select").addClass("masked-hidden");
 		}
-		
+
 		element.append(maskDiv);
 
 		if(options.label.length > 0 || options.spinner !== false) {
@@ -129,18 +139,18 @@
 		// TODO this should be customizable
 		maskDiv.fadeTo('slow', options.overlayOpacity);
 	};
-	
+
 	$.unmaskElement = function(element){
 		//if this element has delayed mask scheduled then remove it
 		if (element.data("_mask_timeout") !== undefined) {
 			clearTimeout(element.data("_mask_timeout"));
 			element.removeData("_mask_timeout");
 		}
-		
+
 		element.find(".loadmask-msg,.loadmask").remove();
 		element.removeClass("masked");
 		element.removeClass("masked-relative");
 		element.find("select").removeClass("masked-hidden");
 	};
- 
-})(jQuery);
+
+}));
