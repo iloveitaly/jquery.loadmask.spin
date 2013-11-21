@@ -1,6 +1,6 @@
 {
   "name": "jquery.loadmask.spin",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "./jquery.loadmask.spin.js",
   "dependencies": {
     "jquery": "~1.4",
@@ -9,7 +9,7 @@
   "description": "A load mask + spinner. Similiar to Mootool's spinner class",
   "repository": {
     "type": "git",
-    "url": "git://github.com/iloveitaly/jquery.loadmask.spin.git"
+    "url": "git://github.com/msilvagarcia/jquery.loadmask.spin.git"
   },
   "keywords": ["loader", "spinner", "mask"]
 }
