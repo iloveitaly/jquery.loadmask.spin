@@ -153,4 +153,5 @@
 		element.find("select").removeClass("masked-hidden");
 	};
 
+	return $;
 }));
