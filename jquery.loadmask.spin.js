@@ -9,8 +9,8 @@
  */
 (function(root, factory) {
 	/* AMD module */
-	if(typeof define == 'function' && typeof require == 'function' && define.amd) {
-		require(['jquery', 'spin'], factory);
+	if(typeof define == 'function' && define.amd) {
+		define('jquery.loadmask.spin', ['jquery', 'spin'], factory);
 	} else {
 	// Browser globals
 		if(!root.Spinner) throw new Error('Spin.js not present');
