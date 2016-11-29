@@ -70,7 +70,10 @@
 		
 		element.addClass("masked");
 		
-		var maskDiv = $('<div class="loadmask"></div>').css({opacity: 0 });
+		var maskDiv = $('<div class="loadmask"></div>').css({
+      opacity: 0,
+      top: element.scrollTop()
+    });
 
 		if(options.overlaySize !== false) {
 			if(options.overlaySize.height !== undefined)
@@ -101,14 +104,14 @@
 
 			if(options.label.length > 0) {
 				var label = $('<div class="loadmask-label">' + options.label + '</div>')
-				maskMsgDiv.append(label)
+        maskMsgDiv.append(label)
 			}
 
 			element.append(maskMsgDiv);
 
 			// calculate center position
 			// TODO there must be cleaner way to do this; check newer jQuery methods and see if anything will fit
-			maskMsgDiv.css("top", Math.round(maskDiv.height() / 2 - (maskMsgDiv.height() - parseInt(maskMsgDiv.css("padding-top")) - parseInt(maskMsgDiv.css("padding-bottom"))) / 2)+"px");
+			maskMsgDiv.css("top", Math.round(maskDiv.height() / 2 - (maskMsgDiv.height() - parseInt(maskMsgDiv.css("padding-top")) - parseInt(maskMsgDiv.css("padding-bottom"))) / 2) + element.scrollTop() + "px");
 			maskMsgDiv.css("left", Math.round(maskDiv.width() / 2 - (maskMsgDiv.width() - parseInt(maskMsgDiv.css("padding-left")) - parseInt(maskMsgDiv.css("padding-right"))) / 2)+"px");
 			maskMsgDiv.show();
 
