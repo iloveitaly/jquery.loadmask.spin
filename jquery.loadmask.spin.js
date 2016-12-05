@@ -71,9 +71,9 @@
 		element.addClass("masked");
 		
 		var maskDiv = $('<div class="loadmask"></div>').css({
-      opacity: 0,
-      top: element.scrollTop()
-    });
+			opacity: 0,
+			top: element.scrollTop()
+		});
 
 		if(options.overlaySize !== false) {
 			if(options.overlaySize.height !== undefined)
@@ -104,7 +104,7 @@
 
 			if(options.label.length > 0) {
 				var label = $('<div class="loadmask-label">' + options.label + '</div>')
-        maskMsgDiv.append(label)
+				maskMsgDiv.append(label)
 			}
 
 			element.append(maskMsgDiv);
